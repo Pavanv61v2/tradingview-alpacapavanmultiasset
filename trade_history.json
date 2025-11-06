@@ -229,5 +229,13 @@
     "orderSize": 1.0,
     "orderId": "fe0030ad-0740-445f-9b7d-602aa8c784c5",
     "status": "success"
+  },
+  {
+    "timestamp": "2025-11-06T09:31:23.013561",
+    "symbol": "SOL/USD",
+    "action": "buy",
+    "orderSize": 1.0,
+    "orderId": "689ac1a9-73d0-48a6-ba67-5ad0d56bc6de",
+    "status": "success"
   }
 ]
