@@ -363,5 +363,19 @@
     "timeInForce": "day",
     "orderId": "beb58441-ebe2-499a-89fa-5cd962040064",
     "status": "success"
+  },
+  {
+    "timestamp": "2025-11-06T13:35:42.203578",
+    "symbol": "SOL/USD",
+    "action": null,
+    "qty": null,
+    "notional": null,
+    "limitPrice": null,
+    "orderType": "market",
+    "timeInForce": null,
+    "allowShort": null,
+    "fractionalRequested": null,
+    "status": "failed",
+    "error": "Invalid action; expected buy/sell"
   }
 ]
