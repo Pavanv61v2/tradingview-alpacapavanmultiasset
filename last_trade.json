@@ -1,14 +1,14 @@
 {
-  "timestamp": "2025-11-06T13:35:42.203578",
+  "timestamp": "2025-11-06T13:37:26.842259",
   "symbol": "SOL/USD",
-  "action": null,
-  "qty": null,
+  "action": "buy",
+  "qty": 1.0,
   "notional": null,
-  "limitPrice": null,
-  "orderType": "market",
-  "timeInForce": null,
-  "allowShort": null,
-  "fractionalRequested": null,
-  "status": "failed",
-  "error": "Invalid action; expected buy/sell"
+  "limitPrice": 160.6,
+  "orderType": "limit",
+  "allowShort": false,
+  "fractionalRequested": false,
+  "timeInForce": "gtc",
+  "status": "success",
+  "orderId": "d940d01c-8e5e-40b4-978b-0d09eff0c798"
 }

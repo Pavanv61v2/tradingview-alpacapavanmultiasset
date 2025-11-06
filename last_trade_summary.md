@@ -2,14 +2,24 @@
 
 
 
-**Time:** 2025-11-06T13:35:42.203578
+**Time:** 2025-11-06T13:37:26.842259
 
 **Symbol:** SOL/USD
 
-**Order Type:** market
+**Action:** buy
 
-**Status:** failed
+**Order Type:** limit
 
+**Time in Force:** gtc
 
+**Allow Short:** False
 
-**Error:** `Invalid action; expected buy/sell`
+**Fractional Requested:** False
+
+**Qty:** 1.0
+
+**Limit Price:** 160.6
+
+**Order ID:** d940d01c-8e5e-40b4-978b-0d09eff0c798
+
+**Status:** success
