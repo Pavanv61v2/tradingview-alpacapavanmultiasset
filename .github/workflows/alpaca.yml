@@ -3,26 +3,28 @@ name: TradingView-Alpaca Bridge
   repository_dispatch:
     types:
       - trading-signal
-  workflow_dispatch: null
+  workflow_dispatch:
 
 permissions:
   contents: write
-  
+
 jobs:
   place-order:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
+
       - name: Process Trading Signal
         env:
           ALPACA_API_KEY: '${{ secrets.ALPACA_API_KEY }}'
           ALPACA_API_SECRET: '${{ secrets.ALPACA_API_SECRET }}'
-          ALPACA_PAPER_TRADING: '${{ secrets.ALPACA_PAPER_TRADING }}'
+          ALPACA_PAPER_TRADING: '${{ secrets.ALPACA_PAPER_TRADING }}'   # "true" or "false"
           SIGNAL_DATA: '${{ toJson(github.event.client_payload) }}'
           NOTIFICATIONS_ENABLED: 'true'
           NOTIFICATION_EMAIL: '${{ secrets.NOTIFICATION_EMAIL }}'
@@ -31,210 +33,281 @@ jobs:
           echo "Symbol: ${{ github.event.client_payload.symbol || 'N/A' }}"
           echo "Action: ${{ github.event.client_payload.action || 'N/A' }}"
           echo "Order size: ${{ github.event.client_payload.order_size || 'N/A' }}"
+          echo "Notional: ${{ github.event.client_payload.notional || 'N/A' }}"
           echo "Price: ${{ github.event.client_payload.price || 'N/A' }}"
+          echo "Fractional: ${{ github.event.client_payload.fractional || 'N/A' }}"
           echo "Alert message: ${{ github.event.client_payload.alert_message || 'N/A' }}"
-          
-          # Install dependencies
+
           pip install alpaca-trade-api requests
 
-          # Create and run the trading script
           cat > trade.py << 'EOF'
           import os
           import json
-          import time
           from datetime import datetime
           import alpaca_trade_api as tradeapi
-          
-          # Trade log file
+
           TRADE_LOG_FILE = 'trade_history.json'
-          
+
           def log_trade(trade_info):
-              """Log trade information to file"""
               try:
-                  # Check if the log file exists
                   trades = []
                   if os.path.exists(TRADE_LOG_FILE):
-                      # Read existing logs
                       with open(TRADE_LOG_FILE, 'r') as f:
                           try:
                               trades = json.load(f)
                           except json.JSONDecodeError:
                               trades = []
-                  
-                  # Add the new trade
                   trades.append(trade_info)
-                  
-                  # Write back to file
                   with open(TRADE_LOG_FILE, 'w') as f:
                       json.dump(trades, f, indent=2)
-                  
                   print("Trade logged successfully!")
               except Exception as e:
-                  print(f"Error logging trade: {str(e)}")
-          
-          def place_order():
-              """Main function to place order with Alpaca"""
+                  print(f"Error logging trade: {e}")
+
+          def _first_present(d, keys):
+              for k in keys:
+                  v = d.get(k)
+                  if v is not None and str(v).strip() != "":
+                      return v
+              return None
+
+          def _parse_float(v):
+              if v is None:
+                  return None
               try:
-                  # Get Alpaca credentials
+                  return float(str(v).strip())
+              except (ValueError, TypeError):
+                  return None
+
+          def _parse_bool(v):
+              if v is None: return False
+              s = str(v).strip().lower()
+              return s in ("1","true","yes","y","on")
+
+          def _normalize_symbol(sym: str) -> str:
+              """
+              Normalize common crypto variations:
+              - BTCUSDT -> BTC/USD
+              - BTCUSD  -> BTC/USD
+              Leaves stock tickers unchanged (AAPL, TSLA, etc.)
+              """
+              s = sym.upper().replace(' ', '')
+              if '/' in s:
+                  return s
+              if s.endswith('USDT'):
+                  return s[:-4] + '/USD'
+              if s.endswith('USD'):
+                  return s[:-3] + '/USD'
+              return s
+
+          def _get_latest_trade_price(api, symbol: str):
+              """
+              Try to fetch latest trade price via Alpaca data API.
+              Works for US equities. Crypto uses a different venue; we avoid for crypto path.
+              """
+              try:
+                  # For alpaca-trade-api, data API v2 latest trade:
+                  lt = api.get_latest_trade(symbol)
+                  px = getattr(lt, "price", None) or getattr(lt, "p", None)
+                  if px is not None:
+                      print(f"[Data] Latest trade price for {symbol}: {px}")
+                      return float(px)
+              except Exception as e:
+                  print(f"[Data] Latest trade price fetch failed for {symbol}: {e}")
+              return None
+
+          def place_order():
+              try:
+                  # Credentials
                   api_key = os.environ.get('ALPACA_API_KEY')
                   api_secret = os.environ.get('ALPACA_API_SECRET')
-                  paper_trading = os.environ.get('ALPACA_PAPER_TRADING', 'true').lower() == 'true'
-                  
+                  paper = os.environ.get('ALPACA_PAPER_TRADING', 'true').lower() == 'true'
                   if not api_key or not api_secret:
                       raise ValueError("Alpaca API credentials not provided")
-                  
-                  # Parse signal data
-                  signal_data = os.environ.get('SIGNAL_DATA')
-                  if not signal_data:
+
+                  # Payload
+                  raw = os.environ.get('SIGNAL_DATA')
+                  if not raw:
                       raise ValueError("No signal data provided")
-                  
-                  signal = json.loads(signal_data)
+                  signal = json.loads(raw)
                   print(f"Processing signal: {signal}")
-                  
-                  # Extract trading information
-                  symbol = signal.get('symbol') or signal.get('ticker')
+
+                  # Required fields
+                  symbol = _first_present(signal, ['symbol', 'ticker'])
                   if not symbol:
                       raise ValueError("No symbol provided in signal")
-                  
-                  # Ensure symbol is in correct format for Alpaca
-                  symbol = symbol.upper()
-                  # For crypto in Alpaca, format is usually BTC/USD
-                  if symbol.endswith('USDT'):
-                      symbol = symbol.replace('USDT', '/USD')
-                  elif symbol.endswith('USD'):
-                      if not '/' in symbol:
-                          symbol = symbol[:-3] + '/USD'
-                  
+                  symbol = _normalize_symbol(symbol)
+
                   action = signal.get('action')
-                  if not action:
-                      raise ValueError("No action (buy/sell) provided in signal")
-                  
-                  is_buy = action.lower() == 'buy'
-                  action_type = 'buy' if is_buy else 'sell'
-                  
-                  # Parse order size
-                  order_size = 1  # Default to 1 share/unit
-                  if 'order_size' in signal and signal['order_size']:
-                      try:
-                          order_size = float(signal['order_size'])
-                      except (ValueError, TypeError):
-                          print(f"Warning: Could not parse order_size: {signal['order_size']}, using default of 1")
-                  
-                  # Initialize Alpaca API
-                  base_url = 'https://paper-api.alpaca.markets' if paper_trading else 'https://api.alpaca.markets'
+                  if not action or str(action).lower() not in ('buy', 'sell'):
+                      raise ValueError("No valid action (buy/sell) provided in signal")
+                  side = str(action).lower()
+
+                  # Optional fields
+                  qty_raw = _first_present(signal, ['order_size', 'qty', 'quantity'])
+                  qty_float = _parse_float(qty_raw)
+
+                  notional_raw = _first_present(signal, ['notional', 'amount_usd', 'usd'])
+                  notional = _parse_float(notional_raw)
+
+                  limit_price_raw = _first_present(signal, ['price', 'limit_price'])
+                  limit_price = _parse_float(limit_price_raw)
+
+                  fractional_flag = _parse_bool(_first_present(signal, ['fractional', 'fractional_stock']))
+
+                  # Alpaca REST
+                  base_url = 'https://paper-api.alpaca.markets' if paper else 'https://api.alpaca.markets'
                   print(f"Connecting to Alpaca API: {base_url}")
-                  
-                  api = tradeapi.REST(
-                      api_key,
-                      api_secret,
-                      base_url,
-                      api_version='v2'
-                  )
-                  
-                  # Get account information
-                  account = api.get_account()
-                  print(f"Account status: {account.status}")
-                  print(f"Account value: ${account.portfolio_value}")
-                  
-                  # Check if we're trading crypto or stock
-                  is_crypto = '/' in symbol
-                  
-                  # Place order
-                  try:
-                      if is_crypto:
-                          print(f"Placing {action_type} order for {order_size} {symbol} (CRYPTO)")
-                          # For crypto, we need to use the crypto API
-                          order = api.submit_order(
-                              symbol=symbol,
-                              qty=order_size,
-                              side=action_type,
-                              type='market',
-                              time_in_force='gtc'
-                          )
+                  api = tradeapi.REST(api_key, api_secret, base_url, api_version='v2')
+
+                  # Account log
+                  acct = api.get_account()
+                  print(f"Account status: {acct.status}; Portfolio value: {acct.portfolio_value}")
+
+                  is_crypto = '/' in symbol  # crypto pairs carry '/'
+
+                  # Guards / validations
+                  if notional is not None and limit_price is not None:
+                      # To keep behavior predictable: do not mix notional with limit here.
+                      raise ValueError("Invalid combination: 'notional' cannot be sent together with 'price'. Use qty for limit orders.")
+
+                  if is_crypto and (fractional_flag or notional is not None):
+                      # Alpaca crypto does NOT support notional.
+                      print("[Info] Ignoring 'fractional/notional' for crypto; using qty path.")
+                      notional = None
+                      fractional_flag = False
+
+                  # Build base order params
+                  params = {
+                      'symbol': symbol,
+                      'side': side,
+                      'time_in_force': 'gtc' if is_crypto else 'day'
+                  }
+
+                  # ---------- Decision Tree ----------
+                  order_type = None
+                  computed_notional = None
+                  reference_px_used = None
+
+                  if (not is_crypto) and fractional_flag:
+                      # FRACTIONAL STOCKS PATH
+                      # Prefer explicit notional if already provided.
+                      if notional is not None and notional > 0:
+                          params['notional'] = notional
+                          params['type'] = 'market'
+                          order_type = 'market'
+                          print(f"[BRANCH] Fractional STOCK notional (explicit): ${notional}")
                       else:
-                          print(f"Placing {action_type} order for {order_size} shares of {symbol} (STOCK)")
-                          # For stocks
-                          order = api.submit_order(
-                              symbol=symbol,
-                              qty=int(order_size),  # Stocks require integer quantities
-                              side=action_type,
-                              type='market',
-                              time_in_force='day'
-                          )
-                      
-                      print(f"Order placed successfully: {order.id}")
-                      
-                      # Log the trade
-                      trade_info = {
-                          'timestamp': datetime.now().isoformat(),
-                          'symbol': symbol,
-                          'action': action_type,
-                          'orderSize': order_size,
-                          'orderId': order.id,
-                          'status': 'success'
-                      }
-                      
-                      log_trade(trade_info)
-                      return trade_info
-                  
-                  except tradeapi.rest.APIError as e:
-                      print(f"Alpaca API Error: {str(e)}")
-                      
-                      # Log the failed trade
-                      trade_info = {
-                          'timestamp': datetime.now().isoformat(),
-                          'symbol': symbol,
-                          'action': action_type,
-                          'orderSize': order_size,
-                          'status': 'failed',
-                          'error': str(e)
-                      }
-                      
-                      log_trade(trade_info)
-                      raise e
-              
-              except Exception as e:
-                  print(f"Error placing order: {str(e)}")
-                  
-                  # Log the failed trade
-                  try:
-                      trade_info = {
-                          'timestamp': datetime.now().isoformat(),
-                          'symbol': symbol if 'symbol' in locals() else 'UNKNOWN',
-                          'action': action_type if 'action_type' in locals() else 'UNKNOWN',
-                          'status': 'failed',
-                          'error': str(e)
-                      }
-                      log_trade(trade_info)
-                  except:
-                      print("Error logging trade failure")
-                  
+                          # Compute notional = qty * reference price
+                          if qty_float is None or qty_float <= 0:
+                              raise ValueError("fractional=true requires a valid positive 'order_size/qty' for stocks.")
+
+                          # Choose reference price: payload price (if any), else fetch latest trade
+                          ref_px = limit_price if (limit_price is not None and limit_price > 0) else _get_latest_trade_price(api, symbol)
+                          if ref_px is None:
+                              raise ValueError("Could not determine a reference price to compute notional. Provide 'price' in payload or enable data access.")
+
+                          computed_notional = float(qty_float) * float(ref_px)
+                          # Place as MARKET notional for broad compatibility
+                          params['notional'] = computed_notional
+                          params['type'] = 'market'
+                          order_type = 'market'
+                          reference_px_used = ref_px
+                          print(f"[BRANCH] Fractional STOCK notional (computed): qty={qty_float} * px={ref_px} -> ${computed_notional:.2f}")
+
+                  else:
+                      # DEFAULT / NON-FRACTIONAL PATH
+                      # Use explicit notional if provided (stocks only)
+                      if (not is_crypto) and (notional is not None and notional > 0):
+                          params['notional'] = notional
+                          params['type'] = 'market'
+                          order_type = 'market'
+                          print(f"[BRANCH] STOCK notional market: ${notional}")
+                      else:
+                          # Qty-based path
+                          if qty_float is None or qty_float <= 0:
+                              qty_float = 1.0
+                          params['qty'] = qty_float if is_crypto else int(qty_float)
+
+                          if limit_price is not None and limit_price > 0:
+                              params['type'] = 'limit'
+                              params['limit_price'] = limit_price
+                              order_type = 'limit'
+                              print(f"[BRANCH] Qty-based LIMIT order @ {limit_price}")
+                          else:
+                              params['type'] = 'market'
+                              order_type = 'market'
+                              print(f"[BRANCH] Qty-based MARKET order")
+
+                  # Submit
+                  print(f"Submitting {order_type.upper()} {side} order with params: {params}")
+                  order = api.submit_order(**params)
+                  print(f"Order placed: id={order.id}, status={getattr(order, 'status', 'submitted')}")
+
+                  trade_info = {
+                      'timestamp': datetime.now().isoformat(),
+                      'symbol': symbol,
+                      'action': side,
+                      'orderType': order_type,
+                      'limitPrice': limit_price,
+                      'qty': params.get('qty'),
+                      'notional': params.get('notional'),
+                      'referencePriceUsed': reference_px_used,
+                      'fractionalRequested': fractional_flag,
+                      'timeInForce': params.get('time_in_force'),
+                      'orderId': order.id,
+                      'status': 'success'
+                  }
+                  log_trade(trade_info)
+                  return trade_info
+
+              except tradeapi.rest.APIError as e:
+                  print(f"Alpaca API Error: {e}")
+                  trade_info = {
+                      'timestamp': datetime.now().isoformat(),
+                      'symbol': symbol if 'symbol' in locals() else 'UNKNOWN',
+                      'action': side if 'side' in locals() else 'UNKNOWN',
+                      'orderType': 'unknown',
+                      'limitPrice': limit_price if 'limit_price' in locals() else None,
+                      'status': 'failed',
+                      'error': str(e)
+                  }
+                  log_trade(trade_info)
                   return {"error": str(e)}
-          
-          # Execute the function
+              except Exception as e:
+                  print(f"Error placing order: {e}")
+                  trade_info = {
+                      'timestamp': datetime.now().isoformat(),
+                      'symbol': symbol if 'symbol' in locals() else 'UNKNOWN',
+                      'action': side if 'side' in locals() else 'UNKNOWN',
+                      'orderType': 'unknown',
+                      'limitPrice': limit_price if 'limit_price' in locals() else None,
+                      'status': 'failed',
+                      'error': str(e)
+                  }
+                  try:
+                      log_trade(trade_info)
+                  except Exception:
+                      print("Error logging trade failure")
+                  return {"error": str(e)}
+
           if __name__ == "__main__":
               result = place_order()
               print("Order process completed.")
           EOF
-          
+
           python trade.py
-          
-          # Debug: List files after script execution
+
           echo "Files in directory after script execution:"
           ls -la
+
       - name: Commit updated trade history
         run: |
-          # Configure git
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          
-          # Check if trade_history.json exists
           if [ -f "trade_history.json" ]; then
-            # Add the file and commit
             git add trade_history.json
             git commit -m "Update trade history [skip ci]" || echo "No changes to commit"
-            
-            # Push changes to the repository
             git push || echo "Failed to push changes"
           else
             echo "trade_history.json not found"
