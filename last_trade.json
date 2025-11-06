@@ -1,14 +1,14 @@
 {
-  "timestamp": "2025-11-06T13:37:26.842259",
+  "timestamp": "2025-11-06T13:45:36.005752",
   "symbol": "SOL/USD",
   "action": "buy",
   "qty": 1.0,
   "notional": null,
-  "limitPrice": 160.6,
+  "limitPrice": 160.92,
   "orderType": "limit",
   "allowShort": false,
   "fractionalRequested": false,
   "timeInForce": "gtc",
   "status": "success",
-  "orderId": "d940d01c-8e5e-40b4-978b-0d09eff0c798"
+  "orderId": "7844992e-0085-404a-9465-913c3ab12d41"
 }

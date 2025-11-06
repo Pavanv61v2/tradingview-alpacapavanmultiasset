@@ -2,7 +2,7 @@
 
 
 
-**Time:** 2025-11-06T13:37:26.842259
+**Time:** 2025-11-06T13:45:36.005752
 
 **Symbol:** SOL/USD
 
@@ -18,8 +18,8 @@
 
 **Qty:** 1.0
 
-**Limit Price:** 160.6
+**Limit Price:** 160.92
 
-**Order ID:** d940d01c-8e5e-40b4-978b-0d09eff0c798
+**Order ID:** 7844992e-0085-404a-9465-913c3ab12d41
 
 **Status:** success
