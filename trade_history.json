@@ -279,5 +279,19 @@
     "timeInForce": "gtc",
     "orderId": "7f69f605-4b48-4cc7-85d0-4c6232f154d7",
     "status": "success"
+  },
+  {
+    "timestamp": "2025-11-06T09:53:13.561384",
+    "symbol": "TSLA",
+    "action": "buy",
+    "orderType": "limit",
+    "limitPrice": 464.0,
+    "qty": 1,
+    "notional": null,
+    "referencePriceUsed": null,
+    "fractionalRequested": false,
+    "timeInForce": "day",
+    "orderId": "6801ef8e-fdeb-437a-8839-58f8fe3859ef",
+    "status": "success"
   }
 ]
