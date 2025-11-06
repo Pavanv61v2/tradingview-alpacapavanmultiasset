@@ -265,5 +265,19 @@
     "timeInForce": "gtc",
     "orderId": "33316590-d929-4b0c-a2b6-730d4dfb7886",
     "status": "success"
+  },
+  {
+    "timestamp": "2025-11-06T09:50:14.994234",
+    "symbol": "SOL/USD",
+    "action": "buy",
+    "orderType": "limit",
+    "limitPrice": 158.91,
+    "qty": 1.0,
+    "notional": null,
+    "referencePriceUsed": null,
+    "fractionalRequested": false,
+    "timeInForce": "gtc",
+    "orderId": "7f69f605-4b48-4cc7-85d0-4c6232f154d7",
+    "status": "success"
   }
 ]
