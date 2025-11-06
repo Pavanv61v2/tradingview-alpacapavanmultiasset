@@ -2,24 +2,22 @@
 
 
 
-**Time:** 2025-11-06T13:45:36.005752
+**Time:** 2025-11-06T14:01:12.256201
 
-**Symbol:** SOL/USD
+**Symbol:** TSLA
 
 **Action:** buy
 
-**Order Type:** limit
+**Order Type:** market
 
-**Time in Force:** gtc
+**Time in Force:** day
 
 **Allow Short:** False
 
-**Fractional Requested:** False
+**Fractional Requested:** True
 
-**Qty:** 1.0
+**Notional:** $231.1
 
-**Limit Price:** 160.92
-
-**Order ID:** 7844992e-0085-404a-9465-913c3ab12d41
+**Order ID:** 65f3b480-4900-48eb-bdbb-6f4aeeff0a01
 
 **Status:** success
