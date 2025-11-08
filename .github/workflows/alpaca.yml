@@ -84,6 +84,8 @@ jobs:
                       lines.append(f"**Order Type:** {tr.get('orderType')}")
                   if tr.get('timeInForce'):
                       lines.append(f"**Time in Force:** {tr.get('timeInForce')}")
+                  if tr.get('extendedHours') is not None:
+                      lines.append(f"**Extended Hours:** {tr.get('extendedHours')}")
                   if tr.get('allowShort') is not None:
                       lines.append(f"**Allow Short:** {tr.get('allowShort')}")
                   if tr.get('fractionalRequested') is not None:
@@ -160,6 +162,13 @@ jobs:
                   print(f"[POS] No position for {symbol} (or error): {e}")
                   return 0.0
 
+          def _parse_extended_flag(signal):
+              # Allow user to explicitly set extended hours via payload; otherwise default later for stock limit orders
+              key = _first_present(signal, ['extended_hours','extended','prepost','after_hours'])
+              if key is None:
+                  return None  # means "use default logic"
+              return _parse_bool(key)
+
           def place_order():
               # Predeclare for failure path
               symbol = None
@@ -171,6 +180,7 @@ jobs:
               allow_short = None
               is_crypto = None
               order_type = None
+              extended_hours = None
               params = {}
 
               try:
@@ -251,6 +261,7 @@ jobs:
                               "action": side,
                               "orderType": "skip",
                               "timeInForce": params.get("time_in_force"),
+                              "extendedHours": extended_hours,
                               "allowShort": allow_short,
                               "fractionalRequested": fractional_flag,
                               "qty": qty,
@@ -308,6 +319,15 @@ jobs:
                               order_type = 'market'
                           print(f"[STOCK] {order_type.upper()} {side} qty={params['qty']}")
 
+                      # Extended hours: STOCK + LIMIT + day TIF only
+                      if (not is_crypto) and (order_type == 'limit'):
+                          tif = params.get('time_in_force', 'day')
+                          if tif == 'day':
+                              user_flag = _parse_extended_flag(signal)
+                              extended_hours = True if user_flag is None else user_flag
+                              params['extended_hours'] = extended_hours
+                              print(f"[STOCK] Limit order extended_hours={extended_hours}")
+
                   order = api.submit_order(**params)
                   print(f"[ORDER] {order.id} status={getattr(order, 'status', 'submitted')}")
 
@@ -322,6 +342,7 @@ jobs:
                       "allowShort": allow_short,
                       "fractionalRequested": fractional_flag,
                       "timeInForce": params.get("time_in_force"),
+                      "extendedHours": extended_hours,
                       "status": "success",
                       "orderId": order.id
                   }
@@ -342,6 +363,7 @@ jobs:
                       "limitPrice": limit_price,
                       "orderType": order_type or fallback_order_type,
                       "timeInForce": fallback_tif,
+                      "extendedHours": extended_hours,
                       "allowShort": allow_short,
                       "fractionalRequested": fractional_flag,
                       "status": "failed",
@@ -464,6 +486,6 @@ jobs:
             git add trade_history.json last_trade_summary.md last_trade.json || true
             git commit -m "Update trade history & summary [skip ci]" || echo "No changes to commit"
             git push || echo "Failed to push changes"
-          else
+          else:
             echo "trade_history.json not found"
           fi
