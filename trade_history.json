@@ -419,5 +419,20 @@
     "timeInForce": "day",
     "status": "success",
     "orderId": "65f3b480-4900-48eb-bdbb-6f4aeeff0a01"
+  },
+  {
+    "timestamp": "2025-11-26T21:01:27.747433",
+    "symbol": "BATS:CLSK",
+    "action": "buy",
+    "qty": 74.38,
+    "notional": null,
+    "limitPrice": 13.445,
+    "orderType": "limit",
+    "timeInForce": "day",
+    "extendedHours": true,
+    "allowShort": false,
+    "fractionalRequested": false,
+    "status": "failed",
+    "error": "asset \"BATS:CLSK\" not found"
   }
 ]

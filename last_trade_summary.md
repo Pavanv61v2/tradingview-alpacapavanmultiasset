@@ -2,22 +2,28 @@
 
 
 
-**Time:** 2025-11-06T14:01:12.256201
+**Time:** 2025-11-26T21:01:27.747433
 
-**Symbol:** TSLA
+**Symbol:** BATS:CLSK
 
 **Action:** buy
 
-**Order Type:** market
+**Order Type:** limit
 
 **Time in Force:** day
 
+**Extended Hours:** True
+
 **Allow Short:** False
 
-**Fractional Requested:** True
+**Fractional Requested:** False
 
-**Notional:** $231.1
+**Qty:** 74.38
 
-**Order ID:** 65f3b480-4900-48eb-bdbb-6f4aeeff0a01
+**Limit Price:** 13.445
 
-**Status:** success
+**Status:** failed
+
+
+
+**Error:** `asset "BATS:CLSK" not found`

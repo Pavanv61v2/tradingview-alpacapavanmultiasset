@@ -1,14 +1,15 @@
 {
-  "timestamp": "2025-11-06T14:01:12.256201",
-  "symbol": "TSLA",
+  "timestamp": "2025-11-26T21:01:27.747433",
+  "symbol": "BATS:CLSK",
   "action": "buy",
-  "qty": null,
-  "notional": 231.1,
-  "limitPrice": null,
-  "orderType": "market",
-  "allowShort": false,
-  "fractionalRequested": true,
+  "qty": 74.38,
+  "notional": null,
+  "limitPrice": 13.445,
+  "orderType": "limit",
   "timeInForce": "day",
-  "status": "success",
-  "orderId": "65f3b480-4900-48eb-bdbb-6f4aeeff0a01"
+  "extendedHours": true,
+  "allowShort": false,
+  "fractionalRequested": false,
+  "status": "failed",
+  "error": "asset \"BATS:CLSK\" not found"
 }
