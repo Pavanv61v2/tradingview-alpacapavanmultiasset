@@ -434,5 +434,20 @@
     "fractionalRequested": false,
     "status": "failed",
     "error": "asset \"BATS:CLSK\" not found"
+  },
+  {
+    "timestamp": "2025-11-28T18:01:31.136321",
+    "symbol": "BATS:MARA",
+    "action": "buy",
+    "qty": 84.75,
+    "notional": null,
+    "limitPrice": 11.8,
+    "orderType": "limit",
+    "timeInForce": "day",
+    "extendedHours": true,
+    "allowShort": false,
+    "fractionalRequested": false,
+    "status": "failed",
+    "error": "asset \"BATS:MARA\" not found"
   }
 ]

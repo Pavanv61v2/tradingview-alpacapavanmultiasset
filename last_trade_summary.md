@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2025-11-26T21:01:27.747433
+**Time:** 2025-11-28T18:01:31.136321
 
-**Symbol:** BATS:CLSK
+**Symbol:** BATS:MARA
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 74.38
+**Qty:** 84.75
 
-**Limit Price:** 13.445
+**Limit Price:** 11.8
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:CLSK" not found`
+**Error:** `asset "BATS:MARA" not found`
