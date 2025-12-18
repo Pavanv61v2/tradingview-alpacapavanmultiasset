@@ -449,5 +449,20 @@
     "fractionalRequested": false,
     "status": "failed",
     "error": "asset \"BATS:MARA\" not found"
+  },
+  {
+    "timestamp": "2025-12-18T21:01:26.054294",
+    "symbol": "BATS:RIOT",
+    "action": "buy",
+    "qty": 74.79,
+    "notional": null,
+    "limitPrice": 13.37,
+    "orderType": "limit",
+    "timeInForce": "day",
+    "extendedHours": true,
+    "allowShort": false,
+    "fractionalRequested": false,
+    "status": "failed",
+    "error": "asset \"BATS:RIOT\" not found"
   }
 ]

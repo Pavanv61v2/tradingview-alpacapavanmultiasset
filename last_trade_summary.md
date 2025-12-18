@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2025-11-28T18:01:31.136321
+**Time:** 2025-12-18T21:01:26.054294
 
-**Symbol:** BATS:MARA
+**Symbol:** BATS:RIOT
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 84.75
+**Qty:** 74.79
 
-**Limit Price:** 11.8
+**Limit Price:** 13.37
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:MARA" not found`
+**Error:** `asset "BATS:RIOT" not found`
