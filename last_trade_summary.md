@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2025-12-18T21:01:26.054294
+**Time:** 2025-12-19T21:01:29.205593
 
-**Symbol:** BATS:RIOT
+**Symbol:** BATS:IREN
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 74.79
+**Qty:** 25.03
 
-**Limit Price:** 13.37
+**Limit Price:** 39.95
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:RIOT" not found`
+**Error:** `asset "BATS:IREN" not found`
