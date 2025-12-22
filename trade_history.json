@@ -479,5 +479,20 @@
     "fractionalRequested": false,
     "status": "failed",
     "error": "asset \"BATS:IREN\" not found"
+  },
+  {
+    "timestamp": "2025-12-22T21:01:30.496503",
+    "symbol": "BATS:BITF",
+    "action": "buy",
+    "qty": 371.06,
+    "notional": null,
+    "limitPrice": 2.695,
+    "orderType": "limit",
+    "timeInForce": "day",
+    "extendedHours": true,
+    "allowShort": false,
+    "fractionalRequested": false,
+    "status": "failed",
+    "error": "asset \"BATS:BITF\" not found"
   }
 ]

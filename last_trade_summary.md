@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2025-12-19T21:01:29.205593
+**Time:** 2025-12-22T21:01:30.496503
 
-**Symbol:** BATS:IREN
+**Symbol:** BATS:BITF
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 25.03
+**Qty:** 371.06
 
-**Limit Price:** 39.95
+**Limit Price:** 2.695
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:IREN" not found`
+**Error:** `asset "BATS:BITF" not found`
