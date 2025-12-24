@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2025-12-22T21:01:30.496503
+**Time:** 2025-12-24T18:01:35.874543
 
-**Symbol:** BATS:BITF
+**Symbol:** BATS:ASST
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 371.06
+**Qty:** 1163.87
 
-**Limit Price:** 2.695
+**Limit Price:** 0.8592
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:BITF" not found`
+**Error:** `asset "BATS:ASST" not found`

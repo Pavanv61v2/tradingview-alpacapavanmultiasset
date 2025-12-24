@@ -1,15 +1,15 @@
 {
-  "timestamp": "2025-12-22T21:01:30.496503",
-  "symbol": "BATS:BITF",
+  "timestamp": "2025-12-24T18:01:35.874543",
+  "symbol": "BATS:ASST",
   "action": "buy",
-  "qty": 371.06,
+  "qty": 1163.87,
   "notional": null,
-  "limitPrice": 2.695,
+  "limitPrice": 0.8592,
   "orderType": "limit",
   "timeInForce": "day",
   "extendedHours": true,
   "allowShort": false,
   "fractionalRequested": false,
   "status": "failed",
-  "error": "asset \"BATS:BITF\" not found"
+  "error": "asset \"BATS:ASST\" not found"
 }
