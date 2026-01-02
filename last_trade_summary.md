@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2025-12-24T18:01:35.874543
+**Time:** 2026-01-02T21:01:32.210238
 
-**Symbol:** BATS:ASST
+**Symbol:** BATS:MARA
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 1163.87
+**Qty:** 100.96
 
-**Limit Price:** 0.8592
+**Limit Price:** 9.905
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:ASST" not found`
+**Error:** `asset "BATS:MARA" not found`

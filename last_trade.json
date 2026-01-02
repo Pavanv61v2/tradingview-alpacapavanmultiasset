@@ -1,15 +1,15 @@
 {
-  "timestamp": "2025-12-24T18:01:35.874543",
-  "symbol": "BATS:ASST",
+  "timestamp": "2026-01-02T21:01:32.210238",
+  "symbol": "BATS:MARA",
   "action": "buy",
-  "qty": 1163.87,
+  "qty": 100.96,
   "notional": null,
-  "limitPrice": 0.8592,
+  "limitPrice": 9.905,
   "orderType": "limit",
   "timeInForce": "day",
   "extendedHours": true,
   "allowShort": false,
   "fractionalRequested": false,
   "status": "failed",
-  "error": "asset \"BATS:ASST\" not found"
+  "error": "asset \"BATS:MARA\" not found"
 }
