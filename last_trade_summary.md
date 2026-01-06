@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2026-01-02T21:01:32.210238
+**Time:** 2026-01-06T21:01:32.555070
 
-**Symbol:** BATS:MARA
+**Symbol:** BATS:OPEN
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 100.96
+**Qty:** 144.3
 
-**Limit Price:** 9.905
+**Limit Price:** 6.93
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:MARA" not found`
+**Error:** `asset "BATS:OPEN" not found`

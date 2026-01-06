@@ -524,5 +524,20 @@
     "fractionalRequested": false,
     "status": "failed",
     "error": "asset \"BATS:MARA\" not found"
+  },
+  {
+    "timestamp": "2026-01-06T21:01:32.555070",
+    "symbol": "BATS:OPEN",
+    "action": "buy",
+    "qty": 144.3,
+    "notional": null,
+    "limitPrice": 6.93,
+    "orderType": "limit",
+    "timeInForce": "day",
+    "extendedHours": true,
+    "allowShort": false,
+    "fractionalRequested": false,
+    "status": "failed",
+    "error": "asset \"BATS:OPEN\" not found"
   }
 ]
