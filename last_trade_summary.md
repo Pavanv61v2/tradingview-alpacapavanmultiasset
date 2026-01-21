@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2026-01-06T21:01:32.555070
+**Time:** 2026-01-21T21:01:41.319404
 
-**Symbol:** BATS:OPEN
+**Symbol:** BATS:ARM
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 144.3
+**Qty:** 6.58
 
-**Limit Price:** 6.93
+**Limit Price:** 113.92
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:OPEN" not found`
+**Error:** `asset "BATS:ARM" not found`

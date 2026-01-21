@@ -539,5 +539,20 @@
     "fractionalRequested": false,
     "status": "failed",
     "error": "asset \"BATS:OPEN\" not found"
+  },
+  {
+    "timestamp": "2026-01-21T21:01:41.319404",
+    "symbol": "BATS:ARM",
+    "action": "buy",
+    "qty": 6.58,
+    "notional": null,
+    "limitPrice": 113.92,
+    "orderType": "limit",
+    "timeInForce": "day",
+    "extendedHours": true,
+    "allowShort": false,
+    "fractionalRequested": false,
+    "status": "failed",
+    "error": "asset \"BATS:ARM\" not found"
   }
 ]
