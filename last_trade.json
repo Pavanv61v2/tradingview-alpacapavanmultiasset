@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-01-21T21:01:41.319404",
-  "symbol": "BATS:ARM",
+  "timestamp": "2026-01-27T21:01:38.947263",
+  "symbol": "BATS:AVGO",
   "action": "buy",
-  "qty": 6.58,
+  "qty": 2.25,
   "notional": null,
-  "limitPrice": 113.92,
+  "limitPrice": 332.78,
   "orderType": "limit",
   "timeInForce": "day",
   "extendedHours": true,
   "allowShort": false,
   "fractionalRequested": false,
   "status": "failed",
-  "error": "asset \"BATS:ARM\" not found"
+  "error": "asset \"BATS:AVGO\" not found"
 }

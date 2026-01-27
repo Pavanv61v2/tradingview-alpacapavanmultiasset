@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2026-01-21T21:01:41.319404
+**Time:** 2026-01-27T21:01:38.947263
 
-**Symbol:** BATS:ARM
+**Symbol:** BATS:AVGO
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 6.58
+**Qty:** 2.25
 
-**Limit Price:** 113.92
+**Limit Price:** 332.78
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:ARM" not found`
+**Error:** `asset "BATS:AVGO" not found`
