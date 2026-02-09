@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2026-01-27T21:01:38.947263
+**Time:** 2026-02-09T21:14:34.821971
 
-**Symbol:** BATS:AVGO
+**Symbol:** BATS:TSLA
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 2.25
+**Qty:** 1.8
 
-**Limit Price:** 332.78
+**Limit Price:** 417.21
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:AVGO" not found`
+**Error:** `asset "BATS:TSLA" not found`

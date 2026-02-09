@@ -569,5 +569,20 @@
     "fractionalRequested": false,
     "status": "failed",
     "error": "asset \"BATS:AVGO\" not found"
+  },
+  {
+    "timestamp": "2026-02-09T21:14:34.821971",
+    "symbol": "BATS:TSLA",
+    "action": "buy",
+    "qty": 1.8,
+    "notional": null,
+    "limitPrice": 417.21,
+    "orderType": "limit",
+    "timeInForce": "day",
+    "extendedHours": true,
+    "allowShort": false,
+    "fractionalRequested": false,
+    "status": "failed",
+    "error": "asset \"BATS:TSLA\" not found"
   }
 ]
