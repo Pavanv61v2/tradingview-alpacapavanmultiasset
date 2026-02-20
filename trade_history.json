@@ -584,5 +584,20 @@
     "fractionalRequested": false,
     "status": "failed",
     "error": "asset \"BATS:TSLA\" not found"
+  },
+  {
+    "timestamp": "2026-02-20T21:01:40.441537",
+    "symbol": "BATS:PLTR",
+    "action": "buy",
+    "qty": 5.54,
+    "notional": null,
+    "limitPrice": 135.27,
+    "orderType": "limit",
+    "timeInForce": "day",
+    "extendedHours": true,
+    "allowShort": false,
+    "fractionalRequested": false,
+    "status": "failed",
+    "error": "asset \"BATS:PLTR\" not found"
   }
 ]

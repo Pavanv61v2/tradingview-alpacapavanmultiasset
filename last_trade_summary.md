@@ -2,9 +2,9 @@
 
 
 
-**Time:** 2026-02-09T21:14:34.821971
+**Time:** 2026-02-20T21:01:40.441537
 
-**Symbol:** BATS:TSLA
+**Symbol:** BATS:PLTR
 
 **Action:** buy
 
@@ -18,12 +18,12 @@
 
 **Fractional Requested:** False
 
-**Qty:** 1.8
+**Qty:** 5.54
 
-**Limit Price:** 417.21
+**Limit Price:** 135.27
 
 **Status:** failed
 
 
 
-**Error:** `asset "BATS:TSLA" not found`
+**Error:** `asset "BATS:PLTR" not found`
